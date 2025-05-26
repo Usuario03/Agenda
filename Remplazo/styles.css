@@ -1,0 +1,287 @@
+/* ==========================================================================
+   ESTILOS GLOBALES Y CONFIGURACIONES BASE
+   ========================================================================== */
+
+   html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Asegura que el cuerpo ocupe todo el alto */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(to right, #e0f7fa, #fce4ec);
+    color: #2c3e50;
+  }
+  
+  /* ==========================================================================
+     CONTENEDOR PRINCIPAL
+     ========================================================================== */
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  
+  /* ==========================================================================
+     IMAGEN LATERAL
+     ========================================================================== */
+  
+  .imagen-lateral {
+    flex: 1 1 40%;
+    max-width: 800px;
+    margin: 10px;
+    overflow: hidden;
+    border-radius: 20px;
+    animation: aparecer 5s forwards;
+  }
+  
+  .imagen-lateral img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  
+  
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: scale(1.05);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* ==========================================================================
+     FORMULARIO DE INICIO DE SESIÓN
+     ========================================================================== */
+  
+     
+  .form-container {
+    flex: 1 1 40%;
+    max-width: 600px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    
+  }
+  
+  input:not([type="date"]), select {
+    display: block;
+    margin: 10px auto;
+    padding: 12px;
+    width: 90%;
+    max-width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: white;
+    box-sizing: border-box;
+  }
+  
+  /* ==========================================================================
+     BOTONES
+     ========================================================================== */
+  
+  .btn {
+    padding: 12px 25px;
+    margin: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn.volver {
+    background-color: #95a5a6;
+  }
+  
+  .btn:hover {
+    background-color: #2980b9;
+  }
+  
+  .btn.volver:hover {
+    background-color: #7f8c8d;
+  }
+  
+  /* ==========================================================================
+     INPUT FECHA PERSONALIZADO
+     ========================================================================== */
+  
+  .input-fecha-wrapper {
+    position: relative;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 350px;
+    height: 46px;
+  }
+  
+  .input-fecha-wrapper input[type="date"] {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    background: #fff;
+    color: #2c3e50;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .input-fecha-wrapper .fecha-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+    font-size: 1em;
+    transition: all 0.3s ease;
+  }
+  
+  .input-fecha-wrapper input[type="date"]:focus + .fecha-placeholder,
+  .input-fecha-wrapper input[type="date"]:valid + .fecha-placeholder {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.9);
+  }
+  
+  .input-fecha-wrapper input[type="date"]:not(:focus):invalid {
+    color: transparent;
+  }
+  
+  .input-fecha-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    cursor: pointer;
+  }
+  
+  /* ==========================================================================
+     FOOTER
+     ========================================================================== */
+     .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    }
+    
+    /* El contenido principal debe crecer para ocupar el espacio disponible */
+    .main-content {
+      flex: 1; /* Permite que el contenido principal crezca */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+    
+    /* El footer permanece al final */
+    .footer {
+      background: #333;
+      color: #ccc;
+      text-align: center;
+      padding: 8px 5px;
+      width: 100%;
+      font-size: 0.7em;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin-top: auto; /* Empuja el footer al final */
+    }
+    
+  
+  /* ==========================================================================
+     CLASES UTILITARIAS
+     ========================================================================== */
+  
+  .oculto {
+    display: none;
+  }
+  
+  /* ==========================================================================
+     RESPONSIVE (MÓVIL)
+     ========================================================================== */
+  
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column;
+    }
+  
+    .imagen-lateral, .form-container {
+      max-width: 90%;
+    }
+  }
+  /* Scroll personalizado */
+::-webkit-scrollbar {
+  width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+  background: #e0f7fa; /* Color del fondo del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3498db; /* Color del scroll */
+  border-radius: 5px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2980b9; /* Color del scroll al pasar el mouse */
+}
+.info-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  text-align: center;
+}
+
+.info-card h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.info-card p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+/* Estilos específicos para el formulario de agendar cita */
+.agendar-form {
+  background-color: #fff8e1; /* Fondo amarillo claro */
+  padding: 3rem; /* Más espacio interno */
+  border: 2px dashed #ff9800; /* Borde naranja */
+  box-shadow: 0 6px 15px rgba(255, 152, 0, 0.3);
+  max-width: 650px;
+  margin: 20px auto;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.agendar-form h2 {
+  color: #e65100;
+  margin-bottom: 20px;
+}
