@@ -16,17 +16,17 @@ app.use(express.json());
 // Rutas de la API
 app.use("/api/auth", require("./routes/auth"));
 
-// 🟩 Servir archivos estáticos del frontend
-app.use(express.static(path.join(__dirname))); // sirve HTML, CSS, JS, imágenes
+// 🟩 Servir archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, "public")));
 
 // 🟨 Ruta principal: index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // 🟦 Ruta para agendamiento: index2.html
 app.get("/agendar", (req, res) => {
-  res.sendFile(path.join(__dirname, "index2.html"));
+  res.sendFile(path.join(__dirname, "public", "index2.html"));
 });
 
 // 🟩 Iniciar el servidor
