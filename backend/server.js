@@ -5,7 +5,7 @@ const path = require("path");
 const conectarDB = require("./db.js");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 // Conectar a MongoDB
 conectarDB();
