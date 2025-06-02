@@ -8,103 +8,33 @@
 </head>
 
 <body>
-  <!-- Contenedor principal -->
   <div class="container">
     <div class="main-content">
 
-      <!-- ============ IMAGEN LATERAL ============ -->
       <div class="imagen-lateral">
         <img src="Imagenes/Tecma.jpg" alt="Hospital Tecma">
       </div>
 
-      <!-- ============ CONTENIDO PRINCIPAL ============ -->
       <div class="form-column">
-
-        <!-- ============ PANTALLA PRINCIPAL ============ -->
         <main id="menu-principal" class="form-container">
           <h1>Bienvenido a Clínica Bienestar</h1>
           <p>Tu salud, nuestra prioridad</p>
 
           <div class="botones-inicio">
-            <button class="btn" id="btn-login">Iniciar Sesión</button>
-            <button class="btn" id="btn-registro">Registrarse</button>
+            <a href="login.html" class="btn">Iniciar Sesión</a>
+            <a href="registro.html" class="btn">Registrarse</a>
           </div>
         </main>
 
-        <!-- ============ SECCIÓN INFORMATIVA ============ -->
         <section class="form-container info-card">
           <h2>¿Quiénes somos?</h2>
           <p>En Clínica Bienestar contamos con un equipo de médicos especialistas en Medicina General, Pediatría y Dermatología. 
           Estamos comprometidos con brindarte una atención de calidad y calidez.</p>
         </section>
-
       </div>
-
-      <!-- ============ FORMULARIO DE LOGIN ============ -->
-      <section id="form-login" class="form-container oculto">
-        <h2>Iniciar Sesión</h2>
-        <form class="formulario">
-          <input type="email" id="login-correo" placeholder="Correo electrónico" required>
-          <input type="password" id="login-contraseña" placeholder="Contraseña" required>
-
-          <div class="acciones">
-            <button type="submit" class="btn">Entrar</button>
-            <button type="button" class="btn volver">Volver</button>
-          </div>
-        </form>
-
-        <div id="resultado-login"></div>
-      </section>
-
-      <!-- ============ FORMULARIO DE REGISTRO ============ -->
-      <section id="form-registro" class="form-container oculto">
-        <h2>Registro de Usuario</h2>
-        <form class="formulario">
-          <input type="text" id="primer-nombre" placeholder="Primer Nombre" required>
-          <input type="text" id="segundo-nombre" placeholder="Segundo Nombre">
-          <input type="text" id="cedula" placeholder="Cédula" required>
-
-          <div class="input-fecha-wrapper">
-            <input type="date" id="fecha-nacimiento" required>
-            <span class="fecha-placeholder">Fecha de Nacimiento</span>
-          </div>
-
-          <input type="email" id="correo" placeholder="Correo electrónico" required>
-          <input type="tel" id="telefono" placeholder="Teléfono (10 dígitos)" pattern="\d{10}" required>
-
-          <input type="password" id="contraseña" placeholder="Contraseña (mín. 12 caracteres)" minlength="12" required>
-          <input type="password" id="confirmar-contraseña" placeholder="Confirmar contraseña" minlength="12" required>
-
-          <select id="sexo" required>
-            <option value="">Seleccione Sexo</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-          </select>
-
-          <input type="text" id="direccion" placeholder="Dirección" required>
-
-          <div class="acciones">
-            <button type="submit" class="btn">Registrar</button>
-            <button type="button" class="btn volver">Volver</button>
-          </div>
-        </form>
-
-        <div id="resultado-registro"></div>
-      </section>
-
-<!-- ============ VISTA POST-LOGIN (OCULTA AL INICIO) ============ -->
-<section id="vista-principal" class="form-container oculto">
-  <h2>Bienvenido</h2>
-  <p>¿Qué deseas hacer?</p>
-
-  <div class="botones-inicio">
-    <button class="btn" id="btn-agendar">Agendar Cita</button>
-    <button class="btn volver" id="btn-cerrar-sesion">Cerrar Sesión</button>
+    </div>
   </div>
-    </div> <!-- Cierra main-content -->
-  </div> <!-- Cierra container -->
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="footer-content">
       <p>Clínica Bienestar &copy; 2025. Todos los derechos reservados.</p>
@@ -116,7 +46,5 @@
       </p>
     </div>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>
