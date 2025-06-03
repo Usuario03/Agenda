@@ -1,0 +1,361 @@
+/* ==========================================================================
+   ESTILOS GLOBALES
+   ========================================================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #fce4ec);
+  color: #2c3e50;
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #e0f7fa;
+}
+::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+/* ==========================================================================
+   INDEX
+   ========================================================================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+}
+
+
+/* IMAGEN LATERAL */
+.imagen-lateral {
+  flex: 1 1 40%;
+  max-width: 800px;
+  margin: 10px;
+  overflow: hidden;
+  border-radius: 20px;
+  animation: aparecer 3s forwards;
+}
+
+.imagen-lateral img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.footer {
+  background: #333;
+  color: #ccc;
+  text-align: center;
+  padding: 8px 5px;
+  width: 100%;
+  font-size: 0.7em;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   LOGIN
+   ========================================================================== */
+.form-container {
+  flex: 1 0 40%;
+  max-width: 600px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+input:not([type="date"]), select {
+  display: block;
+  margin: 10px auto;
+  padding: 12px;
+  width: 90%;
+  max-width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: white;
+  box-sizing: border-box;
+}
+/* Solo afecta al login */
+body.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(to right, #e0f7fa, #fce4ec);
+}
+
+body.login-page .form-container {
+  flex: none !important;
+  max-width: 380px !important;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transform: translateY(-350px); /* opcional: para subirlo un poco */
+  margin: 0;
+}
+
+/* Solo inputs del login */
+body.login-page input:not([type="date"]),
+body.login-page select {
+  display: block;
+  margin: 10px auto;
+  padding: 12px;
+  width: 90%;
+  max-width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+
+.btn {
+  display: inline-block;
+  min-width: 140px;       /* todos igual de anchos */
+  text-align: center;
+  padding: 12px 0;        /* ya no necesitas padding lateral */
+  margin: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.btn.volver {
+  background-color: #95a5a6;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}
+
+.btn.volver:hover {
+  background-color: #7f8c8d;
+}
+
+/* ==========================================================================
+   REGISTRO
+   ========================================================================== */
+.registro-form {
+  background-color: #f3e5f5;
+  padding: 2.5rem;
+  border: 1px solid #9c27b0;
+  box-shadow: 0 6px 12px rgba(156, 39, 176, 0.2);
+  max-width: 600px;
+  margin: 20px auto;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.registro-form h2 {
+  color: #6a1b9a;
+  margin-bottom: 20px;
+}
+
+.registro-form input {
+  padding: 12px;
+  margin: 10px auto;
+  width: 90%;
+  max-width: 350px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: white;
+  display: block;
+  box-sizing: border-box;
+}
+
+.registro-form button {
+  padding: 12px 25px;
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.registro-form button:hover {
+  background-color: #7b1fa2;
+}
+
+/* ==========================================================================
+   AGENDAR
+   ========================================================================== */
+.agendar-form {
+  background-color: #fff8e1;
+  padding: 3rem;
+  border: 2px dashed #ff9800;
+  box-shadow: 0 6px 15px rgba(255, 152, 0, 0.3);
+  max-width: 650px;
+  margin: 20px auto;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.agendar-form h2 {
+  color: #e65100;
+  margin-bottom: 20px;
+}
+
+/* Estilo para campo fecha personalizado */
+.input-fecha-wrapper {
+  position: relative;
+  margin: 10px auto;
+  width: 90%;
+  max-width: 350px;
+  height: 46px;
+}
+
+.input-fecha-wrapper input[type="date"] {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  background: #fff;
+  color: #2c3e50;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.input-fecha-wrapper .fecha-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.input-fecha-wrapper input[type="date"]:focus + .fecha-placeholder,
+.input-fecha-wrapper input[type="date"]:valid + .fecha-placeholder {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.9);
+}
+
+.input-fecha-wrapper input[type="date"]:not(:focus):invalid {
+  color: transparent;
+}
+
+.input-fecha-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   UTILITARIOS
+   ========================================================================== */
+.oculto {
+  display: none;
+}
+/* ========================================================================== 
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 420px; /* Ancho fijo máximo para que todo esté centrado */
+  }
+
+  .imagen-lateral,
+  .form-column {
+    width: 100%;
+    margin: 10px 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .imagen-lateral img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 10px auto;
+    font-size: 1em;
+    padding: 10px;
+  }
+
+  input:not([type="date"]),
+  select,
+  .input-fecha-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  h1, h2 {
+    font-size: 1.3rem;
+  }
+
+  p, input, select, button {
+    font-size: 1rem;
+  }
+
+  .footer-content {
+    text-align: center;
+    padding: 10px;
+  }
+}

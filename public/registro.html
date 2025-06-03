@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Clínica Bienestar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="main-content">
+
+      <div class="imagen-lateral">
+        <img src="Imagenes/Tecma.jpg" alt="Hospital Tecma">
+      </div>
+
+      <section class="form-container">
+        <h2>Registro de Usuario</h2>
+        <form class="formulario">
+          <input type="text" id="primer-nombre" placeholder="Primer Nombre" required>
+          <input type="text" id="segundo-nombre" placeholder="Segundo Nombre">
+          <input type="text" id="cedula" placeholder="Cédula" required>
+
+          <div class="input-fecha-wrapper">
+            <input type="date" id="fecha-nacimiento" required>
+            <span class="fecha-placeholder">Fecha de Nacimiento</span>
+          </div>
+
+          <input type="email" id="correo" placeholder="Correo electrónico" required>
+          <input type="tel" id="telefono" placeholder="Teléfono (10 dígitos)" pattern="\d{10}" required>
+
+          <input type="password" id="contraseña" placeholder="Contraseña (mín. 12 caracteres)" minlength="12" required>
+          <input type="password" id="confirmar-contraseña" placeholder="Confirmar contraseña" minlength="12" required>
+
+          <select id="sexo" required>
+            <option value="">Seleccione Sexo</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+
+          <input type="text" id="direccion" placeholder="Dirección" required>
+
+          <div class="acciones">
+            <button type="submit" class="btn">Registrar</button>
+            <a href="index.html" class="btn volver">Volver</a>
+          </div>
+        </form>
+
+        <div id="resultado-registro"></div>
+      </section>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
