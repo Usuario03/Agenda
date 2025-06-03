@@ -10,36 +10,23 @@ const PORT = process.env.PORT || 10000;
 // Conectar a MongoDB
 conectarDB();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Rutas de la API
 app.use("/api/auth", require("./routes/auth"));
 
-// Archivos estáticos (CSS, imágenes, etc.)
+// Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
-// Rutas específicas para tus páginas
+// Ruta principal: index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Ruta para agendamiento: index2.html
 app.get("/agendar", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "agendar.html"));
-});
-
-app.get("/registro", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "registro.html"));
-});
-
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
-});
-
-// Fallback para rutas no encontradas (opcional, útil si usas frontend tipo SPA)
-app.get("*", (req, res) => {
-  res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index2.html"));
 });
 
 // Iniciar el servidor
