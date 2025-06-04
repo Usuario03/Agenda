@@ -9,5 +9,16 @@
     "contraseña": "Comunidadforo1,",
     "sexo": "M",
     "direccion": "calle 37"
+  },
+  {
+    "primerNombre": "Jairo",
+    "segundoNombre": "Leal",
+    "cedula": "1096247924",
+    "fechaNacimiento": "2025-06-11",
+    "correo": "jaleal4@gmail.com",
+    "telefono": "3206263832",
+    "contraseña": "$2b$10$c7ueXHQmratX2T0uNzfZVu2edvFoGW/khTAqOzth5tfKu9BPqH8jm",
+    "sexo": "M",
+    "direccion": "calle 37"
   }
 ]

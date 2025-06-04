@@ -32,13 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => mostrarFormulario("menu-principal"));
   });
 
-  // Formulario login: ahora con clase específica `.form-login`
+  // Formulario login
   const loginForm = document.querySelector(".form-login");
   if (loginForm) {
     loginForm.addEventListener("submit", loginUsuario);
   }
 
-  // Formulario registro: ahora con clase específica `.form-registro`
+  // Formulario registro
   const registroForm = document.querySelector(".form-registro");
   if (registroForm) {
     registroForm.addEventListener("submit", registrarUsuario);
@@ -58,7 +58,6 @@ function mostrarFormulario(id) {
 async function loginUsuario(event) {
   event.preventDefault();
 
-  // Chequea que existan los inputs para evitar errores
   const correoInput = document.getElementById("login-correo");
   const contraseñaInput = document.getElementById("login-contraseña");
   const resultado = document.getElementById("resultado-login");
@@ -72,10 +71,16 @@ async function loginUsuario(event) {
   const contraseña = contraseñaInput.value;
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    // IMPORTANTE: Cambia esta URL por la de tu backend en Render
+    const res = await fetch("https://tu-api.onrender.com/api/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ correo, contraseña }),
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        correo, 
+        contraseña 
+      }),
     });
 
     const data = await res.json();
@@ -83,14 +88,21 @@ async function loginUsuario(event) {
     if (res.ok) {
       resultado.innerText = "✅ Inicio de sesión exitoso";
       resultado.style.color = "green";
+      
+      // Guarda el token en localStorage si lo recibes
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+      
       setTimeout(() => {
-        window.location.href = "agendar.html"; // REDIRECCIÓN CORRECTA AL AGENDAR
+        window.location.href = "agendar.html";
       }, 1000);
     } else {
       resultado.innerText = `⚠️ ${data.msg || "Credenciales inválidas"}`;
       resultado.style.color = "red";
     }
   } catch (error) {
+    console.error("Error en login:", error);
     resultado.innerText = "❌ Error al conectar con el servidor";
     resultado.style.color = "red";
   }
@@ -99,7 +111,6 @@ async function loginUsuario(event) {
 async function registrarUsuario(event) {
   event.preventDefault();
 
-  // Chequea que existan los inputs para evitar errores
   const primerNombreInput = document.getElementById("primer-nombre");
   const segundoNombreInput = document.getElementById("segundo-nombre");
   const cedulaInput = document.getElementById("cedula");
@@ -129,21 +140,23 @@ async function registrarUsuario(event) {
     correo: correoInput.value,
     telefono: telefonoInput.value,
     contraseña: contraseñaInput.value,
-    confirmarContraseña: confirmarContraseñaInput.value,
     sexo: sexoInput.value,
     direccion: direccionInput.value,
   };
 
-  if (usuario.contraseña !== usuario.confirmarContraseña) {
+  if (usuario.contraseña !== confirmarContraseñaInput.value) {
     resultado.innerText = "⚠️ Las contraseñas no coinciden";
     resultado.style.color = "red";
     return;
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/register", {
+    // IMPORTANTE: Cambia esta URL por la de tu backend en Render
+    const res = await fetch("https://tu-api.onrender.com/api/auth/register", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(usuario),
     });
 
@@ -153,29 +166,15 @@ async function registrarUsuario(event) {
       resultado.innerText = "✅ Registro exitoso";
       resultado.style.color = "green";
       setTimeout(() => {
-        window.location.href = "login.html";  // Opcional: redirige a login después de registro
+        window.location.href = "login.html";
       }, 1500);
     } else {
       resultado.innerText = `⚠️ ${data.msg || "Error al registrar"}`;
       resultado.style.color = "red";
     }
   } catch (error) {
+    console.error("Error en registro:", error);
     resultado.innerText = "❌ Error al conectar con el servidor";
     resultado.style.color = "red";
   }
 }
-
-
-// server.js (Backend Node.js)
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.use('/api/auth', require('./routes/auth'));
-
-app.listen(5000, () => {
-  console.log('Servidor corriendo en http://localhost:5000');
-});
