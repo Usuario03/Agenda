@@ -10,21 +10,23 @@ const PORT = process.env.PORT || 5000;
 // Conectar a MongoDB
 conectarDB();
 
-// Configuración CORS mejorada
-const allowedOrigins = [
-  'https://agenda-yic3.onrender.com',
-  'http://localhost:3000'
-];
-
+// Configuración CORS mejorada y más flexible
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin && process.env.NODE_ENV !== 'production') {
-      return callback(null, true);
-    }
+    // Permitir todas las solicitudes de Render y localhost
+    const allowedPatterns = [
+      /https?:\/\/agenda-yic3\.onrender\.com$/,
+      /https?:\/\/tu-api\.onrender\.com$/,
+      /http:\/\/localhost(:\d+)?$/
+    ];
     
-    if (allowedOrigins.includes(origin) || origin?.includes('render.com')) {
+    // Permitir solicitudes sin origen (Postman, móviles, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedPatterns.some(pattern => pattern.test(origin))) {
       callback(null, true);
     } else {
+      console.log('Origen bloqueado:', origin); // Para debugging
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -34,9 +36,13 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Middlewares esenciales
+// Aplicar CORS
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Para preflight requests
+
+// Manejar explícitamente las peticiones OPTIONS (preflight)
+app.options('*', cors(corsOptions));
+
+// Resto de tu configuración...
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,27 +52,12 @@ app.use('/api/auth', require('./routes/auth'));
 // Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Manejo de errores centralizado
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  
-  if (err.name === 'CorsError') {
-    return res.status(403).json({ 
-      error: 'Acceso no permitido',
-      details: err.message 
-    });
-  }
-  
-  res.status(500).json({ 
-    error: 'Error interno del servidor',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`\n✅ Servidor corriendo en puerto ${PORT}`);
+  console.log(`\n✅ Servidor listo en puerto ${PORT}`);
   console.log(`🌍 Entorno: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 CORS habilitado para:`);
-  allowedOrigins.forEach(origin => console.log(`   - ${origin}`));
+  console.log(`🔗 CORS configurado para:`);
+  console.log(`   - https://agenda-yic3.onrender.com`);
+  console.log(`   - http://localhost:3000`);
+  console.log(`   - Cualquier subdominio de render.com`);
 });
