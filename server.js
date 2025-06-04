@@ -5,7 +5,7 @@ const path = require("path");
 const conectarDB = require("./db.js");
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5000;
 
 // Conectar a MongoDB
 conectarDB();
@@ -19,14 +19,21 @@ app.use("/api/auth", require("./routes/auth"));
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static(path.join(__dirname, "public")));
 
-// Ruta principal: index.html
+// Rutas para vistas HTML
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Ruta para agendamiento: index2.html
 app.get("/agendar", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index2.html"));
+  res.sendFile(path.join(__dirname, "public", "agendar.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+app.get("/registro", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "registro.html"));
 });
 
 // Iniciar el servidor

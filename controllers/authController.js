@@ -1,46 +1,99 @@
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
 
-// Simulación de una base de datos con archivo JSON
-const filePath = path.join(__dirname, '..', 'data', 'usuarios.json');
+const dataDir = path.join(__dirname, '..', 'data');
+const filePath = path.join(dataDir, 'usuarios.json');
 
-// Asegúrate de que exista el archivo de datos
-if (!fs.existsSync(filePath)) {
-  fs.writeFileSync(filePath, JSON.stringify([]));
-}
+// Crear archivo si no existe
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify([]));
 
-// Registrar usuario
-const registerUser = (req, res) => {
-  const { correo, contraseña } = req.body;
+// Helper para leer/escribir usuarios
+const readUsers = () => JSON.parse(fs.readFileSync(filePath));
+const writeUsers = (users) => fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
 
-  if (!correo || !contraseña) {
-    return res.status(400).json({ mensaje: 'Correo y contraseña son requeridos' });
+// Registro de usuario
+const registerUser = async (req, res) => {
+  try {
+    const {
+      primerNombre,
+      segundoNombre,
+      cedula,
+      fechaNacimiento,
+      correo,
+      telefono,
+      contraseña,
+      confirmarContraseña,
+      sexo,
+      direccion,
+    } = req.body;
+
+    // Validaciones
+    if (!primerNombre || !cedula || !correo || !contraseña || !confirmarContraseña) {
+      return res.status(400).json({ mensaje: 'Campos obligatorios faltantes' });
+    }
+
+    if (contraseña !== confirmarContraseña) {
+      return res.status(400).json({ mensaje: 'Las contraseñas no coinciden' });
+    }
+
+    if (contraseña.length < 12) {
+      return res.status(400).json({ mensaje: 'La contraseña debe tener al menos 12 caracteres' });
+    }
+
+    const usuarios = readUsers();
+    if (usuarios.some(user => user.correo === correo)) {
+      return res.status(400).json({ mensaje: 'El correo ya está registrado' });
+    }
+
+    // Hashear contraseña
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+    // Guardar usuario
+    const nuevoUsuario = {
+      primerNombre,
+      segundoNombre,
+      cedula,
+      fechaNacimiento,
+      correo,
+      telefono,
+      contraseña: hashedPassword, // Guarda la versión hasheada
+      sexo,
+      direccion,
+    };
+
+    writeUsers([...usuarios, nuevoUsuario]);
+    res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
+
+  } catch (error) {
+    console.error('Error en registerUser:', error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
   }
-
-  const usuarios = JSON.parse(fs.readFileSync(filePath));
-
-  const existe = usuarios.find(user => user.correo === correo);
-  if (existe) {
-    return res.status(400).json({ mensaje: 'El usuario ya está registrado' });
-  }
-
-  usuarios.push({ correo, contraseña });
-  fs.writeFileSync(filePath, JSON.stringify(usuarios, null, 2));
-
-  res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
 };
 
-// Iniciar sesión
-const loginUser = (req, res) => {
-  const { correo, contraseña } = req.body;
+// Login de usuario
+const loginUser = async (req, res) => {
+  try {
+    const { correo, contraseña } = req.body;
+    const usuarios = readUsers();
+    const usuario = usuarios.find(user => user.correo === correo);
 
-  const usuarios = JSON.parse(fs.readFileSync(filePath));
-  const usuario = usuarios.find(user => user.correo === correo && user.contraseña === contraseña);
+    if (!usuario) {
+      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+    }
 
-  if (usuario) {
+    // Comparar contraseña hasheada
+    const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
+    if (!contraseñaValida) {
+      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+    }
+
     res.json({ mensaje: 'Inicio de sesión exitoso' });
-  } else {
-    res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+
+  } catch (error) {
+    console.error('Error en loginUser:', error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
   }
 };
 

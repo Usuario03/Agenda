@@ -1,6 +1,13 @@
 [
   {
-    "correo": "jairo3@gmail.com",
-    "contraseña": "Comunidadforo1,"
+    "primerNombre": "Jairo",
+    "segundoNombre": "Leal",
+    "cedula": "1096247924",
+    "fechaNacimiento": "2025-06-04",
+    "correo": "jaleal524@gmail.com",
+    "telefono": "3206263832",
+    "contraseña": "Comunidadforo1,",
+    "sexo": "M",
+    "direccion": "calle 37"
   }
 ]

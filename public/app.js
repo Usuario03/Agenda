@@ -1,36 +1,75 @@
-// app.js (Frontend JavaScript completo con conexión al backend)
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("btn-agendar").addEventListener("click", () => {
-    window.location.href = "index2.html";
-  });
+  // Botón para ir a agendar (si existe)
+  const btnAgendar = document.getElementById("btn-agendar");
+  if (btnAgendar) {
+    btnAgendar.addEventListener("click", () => {
+      window.location.href = "agendar.html";
+    });
+  }
 
-  document.getElementById("btn-cerrar-sesion").addEventListener("click", () => {
-    mostrarFormulario("menu-principal");
-  });
+  // Botón cerrar sesión (si existe)
+  const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
+  if (btnCerrarSesion) {
+    btnCerrarSesion.addEventListener("click", () => {
+      mostrarFormulario("menu-principal");
+    });
+  }
 
-  document.getElementById("btn-login").addEventListener("click", () => mostrarFormulario("form-login"));
-  document.getElementById("btn-registro").addEventListener("click", () => mostrarFormulario("form-registro"));
+  // Botón login (si existe)
+  const btnLogin = document.getElementById("btn-login");
+  if (btnLogin) {
+    btnLogin.addEventListener("click", () => mostrarFormulario("form-login"));
+  }
 
+  // Botón registro (si existe)
+  const btnRegistro = document.getElementById("btn-registro");
+  if (btnRegistro) {
+    btnRegistro.addEventListener("click", () => mostrarFormulario("form-registro"));
+  }
+
+  // Botones con clase 'volver' para regresar al menú principal
   document.querySelectorAll(".volver").forEach(btn => {
     btn.addEventListener("click", () => mostrarFormulario("menu-principal"));
   });
 
-  document.querySelector("#form-login form").addEventListener("submit", loginUsuario);
-  document.querySelector("#form-registro form").addEventListener("submit", registrarUsuario);
+  // Formulario login: ahora con clase específica `.form-login`
+  const loginForm = document.querySelector(".form-login");
+  if (loginForm) {
+    loginForm.addEventListener("submit", loginUsuario);
+  }
+
+  // Formulario registro: ahora con clase específica `.form-registro`
+  const registroForm = document.querySelector(".form-registro");
+  if (registroForm) {
+    registroForm.addEventListener("submit", registrarUsuario);
+  }
 });
 
 function mostrarFormulario(id) {
   document.querySelectorAll("main, section").forEach(seccion => {
     seccion.classList.add("oculto");
   });
-  document.getElementById(id).classList.remove("oculto");
+  const elem = document.getElementById(id);
+  if (elem) {
+    elem.classList.remove("oculto");
+  }
 }
 
 async function loginUsuario(event) {
   event.preventDefault();
-  const correo = document.getElementById("login-correo").value;
-  const contraseña = document.getElementById("login-contraseña").value;
+
+  // Chequea que existan los inputs para evitar errores
+  const correoInput = document.getElementById("login-correo");
+  const contraseñaInput = document.getElementById("login-contraseña");
   const resultado = document.getElementById("resultado-login");
+
+  if (!correoInput || !contraseñaInput || !resultado) {
+    console.error("Faltan elementos de login en el DOM");
+    return;
+  }
+
+  const correo = correoInput.value;
+  const contraseña = contraseñaInput.value;
 
   try {
     const res = await fetch("http://localhost:5000/api/auth/login", {
@@ -44,7 +83,9 @@ async function loginUsuario(event) {
     if (res.ok) {
       resultado.innerText = "✅ Inicio de sesión exitoso";
       resultado.style.color = "green";
-      setTimeout(() => mostrarFormulario("vista-principal"), 1000);
+      setTimeout(() => {
+        window.location.href = "agendar.html"; // REDIRECCIÓN CORRECTA AL AGENDAR
+      }, 1000);
     } else {
       resultado.innerText = `⚠️ ${data.msg || "Credenciales inválidas"}`;
       resultado.style.color = "red";
@@ -57,20 +98,41 @@ async function loginUsuario(event) {
 
 async function registrarUsuario(event) {
   event.preventDefault();
-  const usuario = {
-    primerNombre: document.getElementById("primer-nombre").value,
-    segundoNombre: document.getElementById("segundo-nombre").value,
-    cedula: document.getElementById("cedula").value,
-    fechaNacimiento: document.getElementById("fecha-nacimiento").value,
-    correo: document.getElementById("correo").value,
-    telefono: document.getElementById("telefono").value,
-    contraseña: document.getElementById("contraseña").value,
-    confirmarContraseña: document.getElementById("confirmar-contraseña").value,
-    sexo: document.getElementById("sexo").value,
-    direccion: document.getElementById("direccion").value,
-  };
 
+  // Chequea que existan los inputs para evitar errores
+  const primerNombreInput = document.getElementById("primer-nombre");
+  const segundoNombreInput = document.getElementById("segundo-nombre");
+  const cedulaInput = document.getElementById("cedula");
+  const fechaNacimientoInput = document.getElementById("fecha-nacimiento");
+  const correoInput = document.getElementById("correo");
+  const telefonoInput = document.getElementById("telefono");
+  const contraseñaInput = document.getElementById("contraseña");
+  const confirmarContraseñaInput = document.getElementById("confirmar-contraseña");
+  const sexoInput = document.getElementById("sexo");
+  const direccionInput = document.getElementById("direccion");
   const resultado = document.getElementById("resultado-registro");
+
+  if (
+    !primerNombreInput || !cedulaInput || !fechaNacimientoInput || !correoInput ||
+    !telefonoInput || !contraseñaInput || !confirmarContraseñaInput ||
+    !sexoInput || !direccionInput || !resultado
+  ) {
+    console.error("Faltan elementos de registro en el DOM");
+    return;
+  }
+
+  const usuario = {
+    primerNombre: primerNombreInput.value,
+    segundoNombre: segundoNombreInput.value,
+    cedula: cedulaInput.value,
+    fechaNacimiento: fechaNacimientoInput.value,
+    correo: correoInput.value,
+    telefono: telefonoInput.value,
+    contraseña: contraseñaInput.value,
+    confirmarContraseña: confirmarContraseñaInput.value,
+    sexo: sexoInput.value,
+    direccion: direccionInput.value,
+  };
 
   if (usuario.contraseña !== usuario.confirmarContraseña) {
     resultado.innerText = "⚠️ Las contraseñas no coinciden";
@@ -90,6 +152,9 @@ async function registrarUsuario(event) {
     if (res.ok) {
       resultado.innerText = "✅ Registro exitoso";
       resultado.style.color = "green";
+      setTimeout(() => {
+        window.location.href = "login.html";  // Opcional: redirige a login después de registro
+      }, 1500);
     } else {
       resultado.innerText = `⚠️ ${data.msg || "Error al registrar"}`;
       resultado.style.color = "red";
@@ -98,7 +163,8 @@ async function registrarUsuario(event) {
     resultado.innerText = "❌ Error al conectar con el servidor";
     resultado.style.color = "red";
   }
-} 
+}
+
 
 // server.js (Backend Node.js)
 const express = require('express');
