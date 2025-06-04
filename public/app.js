@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Configuración base
-  const API_BASE_URL = 'https://tu-api.onrender.com';
+  const API_BASE_URL = 'https://agenda-yic3.onrender.com';
   const token = localStorage.getItem('token');
   
   // Mapeo de elementos del DOM
