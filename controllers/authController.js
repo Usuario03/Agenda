@@ -1,17 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-const bcrypt = require('bcrypt');
-
-const dataDir = path.join(__dirname, '..', 'data');
-const filePath = path.join(dataDir, 'usuarios.json');
-
-// Crear archivo si no existe
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
-if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify([]));
-
-// Helper para leer/escribir usuarios
-const readUsers = () => JSON.parse(fs.readFileSync(filePath));
-const writeUsers = (users) => fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+const bcrypt = require("bcrypt");
+const Usuario = require("../models/User");
 
 // Registro de usuario
 const registerUser = async (req, res) => {
@@ -30,45 +18,50 @@ const registerUser = async (req, res) => {
     } = req.body;
 
     // Validaciones
-    if (!primerNombre || !cedula || !correo || !contraseña || !confirmarContraseña) {
-      return res.status(400).json({ mensaje: 'Campos obligatorios faltantes' });
+    if (
+      !primerNombre ||
+      !cedula ||
+      !correo ||
+      !contraseña ||
+      !confirmarContraseña
+    ) {
+      return res.status(400).json({ mensaje: "Campos obligatorios faltantes" });
     }
 
     if (contraseña !== confirmarContraseña) {
-      return res.status(400).json({ mensaje: 'Las contraseñas no coinciden' });
+      return res.status(400).json({ mensaje: "Las contraseñas no coinciden" });
     }
 
     if (contraseña.length < 12) {
-      return res.status(400).json({ mensaje: 'La contraseña debe tener al menos 12 caracteres' });
+      return res
+        .status(400)
+        .json({ mensaje: "La contraseña debe tener al menos 12 caracteres" });
     }
 
-    const usuarios = readUsers();
-    if (usuarios.some(user => user.correo === correo)) {
-      return res.status(400).json({ mensaje: 'El correo ya está registrado' });
+    // Verificar si el usuario ya existe
+    const usuarioExistente = await Usuario.findOne({ correo });
+    if (usuarioExistente) {
+      return res.status(400).json({ mensaje: "El correo ya está registrado" });
     }
 
-    // Hashear contraseña
-    const hashedPassword = await bcrypt.hash(contraseña, 10);
-
-    // Guardar usuario
-    const nuevoUsuario = {
+    // Crear nuevo usuario (el hash de la contraseña se maneja en el middleware del modelo)
+    const nuevoUsuario = new Usuario({
       primerNombre,
       segundoNombre,
       cedula,
       fechaNacimiento,
       correo,
       telefono,
-      contraseña: hashedPassword, // Guarda la versión hasheada
+      contraseña,
       sexo,
       direccion,
-    };
+    });
 
-    writeUsers([...usuarios, nuevoUsuario]);
-    res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
-
+    await nuevoUsuario.save();
+    res.status(201).json({ mensaje: "Usuario registrado exitosamente" });
   } catch (error) {
-    console.error('Error en registerUser:', error);
-    res.status(500).json({ mensaje: 'Error en el servidor' });
+    console.error("Error en registerUser:", error);
+    res.status(500).json({ mensaje: "Error en el servidor" });
   }
 };
 
@@ -76,24 +69,23 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { correo, contraseña } = req.body;
-    const usuarios = readUsers();
-    const usuario = usuarios.find(user => user.correo === correo);
 
+    // Buscar usuario por correo
+    const usuario = await Usuario.findOne({ correo });
     if (!usuario) {
-      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+      return res.status(401).json({ mensaje: "Credenciales incorrectas" });
     }
 
-    // Comparar contraseña hasheada
-    const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
+    // Comparar contraseña usando el método del modelo
+    const contraseñaValida = await usuario.comparePassword(contraseña);
     if (!contraseñaValida) {
-      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+      return res.status(401).json({ mensaje: "Credenciales incorrectas" });
     }
 
-    res.json({ mensaje: 'Inicio de sesión exitoso' });
-
+    res.json({ mensaje: "Inicio de sesión exitoso" });
   } catch (error) {
-    console.error('Error en loginUser:', error);
-    res.status(500).json({ mensaje: 'Error en el servidor' });
+    console.error("Error en loginUser:", error);
+    res.status(500).json({ mensaje: "Error en el servidor" });
   }
 };
 
